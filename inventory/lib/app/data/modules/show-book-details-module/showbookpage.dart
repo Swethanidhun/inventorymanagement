@@ -19,6 +19,15 @@ class BookDetailsPage extends GetWidget<ShowBookController> {
         title: const Center(child: Text("Book Details")),
         leading: InkWell(
             onTap: () => Get.back(), child: const Icon(Icons.arrow_back)),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.download),
+            onPressed: () async {
+              var books = await controller.fetchData();
+              await controller.generateExcel(books);
+            },
+          ),
+        ],
       ),
       body: SafeArea(
           child: FutureBuilder<List<BookModel>>(
@@ -216,12 +225,6 @@ class BookDetailsPage extends GetWidget<ShowBookController> {
                                   Get.to(const BookDetailsPage());
                                 },
                                 child: const Text("Delete")),
-                            IconButton(
-                              icon: const Icon(Icons.download),
-                              onPressed: () async {
-                                await controller.generateExcel(data);
-                              },
-                            ),
                           ],
                         )
                       ],
